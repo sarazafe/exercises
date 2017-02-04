@@ -3,6 +3,9 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 // array con las posiciones de los puntos del dibujo
 var puntosCometa;
 
+// array con los sprites del dibujo
+var spritesDibujo;
+
 // sprite jugador y sprites del dibujo
 var player;
 var dibujo;
@@ -24,10 +27,12 @@ var textScore;
 var MIN_SCORE = 0;
 var INITIAL_SCORE = 100;
 var SCORE_TO_ADD = 100;
-var SCORE_TO_DECREMENT = 10;
+var SCORE_TO_DECREMENT = 1;
 
 // texto puntuacion
-var SCORE_LABEL = "Puntuacion: ";
+var SCORE_LABEL = "Puntos: ";
+var LOOSE_MESSAGE = "Oh!!! Perdiste :(";
+var WIN_MESSAGE = "Ganaste!! :)";
 
 
 function preload() {
@@ -83,6 +88,9 @@ function preload() {
         {'x':475, 'y':565, 'sprite':'green_ball'}
     ];
 
+    // sprites del dibujo
+    spritesDibujo = [];
+
     // inicializar el puntero que indicara el siguiente punto a colisionar
     currentPoint = 0;
 
@@ -107,6 +115,7 @@ function create() {
         var sprite = dibujo.create(puntosCometa[point]['x'], puntosCometa[point]['y'], puntosCometa[point]['sprite']);
         game.physics.arcade.enable(sprite);
         sprite.body.collideWorldBounds = true;
+        spritesDibujo[point] = sprite;
     }
 
     // on collide action
@@ -120,7 +129,7 @@ function create() {
     graphics.lineStyle(1, 0x0088FF, 1);
 
     // puntuacion
-    textScore = game.add.bitmapText(10, 10, 'desyrel-pink', SCORE_LABEL, 32);
+    textScore = game.add.bitmapText(10, 10, 'desyrel-pink', SCORE_LABEL + " " + score, 30);
 
 }
 
@@ -152,7 +161,7 @@ function drawLine(player, point){
             && puntosCometa[currentPoint+1]['x'] === secondPoint.x && puntosCometa[currentPoint+1]['y'] === secondPoint.y){
             graphics.moveTo(firstPoint.x, firstPoint.y);
             graphics.lineTo(secondPoint.x, secondPoint.y);
-            console.log("Pintando linea entre (" + firstPoint.x + "," + firstPoint.y + ") y (" + secondPoint.x + "," + secondPoint.y+"). CurrentPoint " + currentPoint);
+            console.log("Pintando linea entre (" + firstPoint.x + "," + firstPoint.y + ") y (" + secondPoint.x + "," + secondPoint.y+"). CurrentPoint " + currentPoint + " " + puntosCometa.length);
 
             firstPoint = secondPoint;
 
@@ -171,7 +180,16 @@ function drawLine(player, point){
     }
 
     // Pintar puntuacion
-    textScore.setText(SCORE_LABEL + " " + score);  
+    if(score < MIN_SCORE){// si perdio, se notifica y se deshabilitan todos los puntos restantes
+        textScore.setText(LOOSE_MESSAGE);
+        for(var i in spritesDibujo){
+            spritesDibujo[i].body.enable = false;
+        }
+    }else if(currentPoint === (puntosCometa.length-1)){//termino el juego
+            textScore.setText(WIN_MESSAGE + "\n" + SCORE_LABEL + " " + score);
+    }else{
+        textScore.setText(SCORE_LABEL + " " + score);
+    }
 }
 
 function render () {
