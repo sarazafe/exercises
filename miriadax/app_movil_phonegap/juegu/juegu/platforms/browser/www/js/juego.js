@@ -36,6 +36,8 @@ var WIN_MESSAGE = "¡¡Ganaste!! :)";
 var music;
 var okSound;
 var failSound;
+var winSound;
+var looseSound;
 
 var app = {
 
@@ -54,58 +56,62 @@ var app = {
             game.stage.backgroundColor = '#FFF';
 
             // sacados los assets de la web de phraser
-            game.load.baseURL = 'http://examples.phaser.io/assets/';
-            game.load.crossOrigin = 'anonymous';
+            //game.load.baseURL = 'http://examples.phaser.io/assets/';
+            //game.load.crossOrigin = 'anonymous';
 
             // cargar sonidos
-            game.load.audio('audio', ['audio/CatAstroPhi_shmup_normal.wav']);
-            game.load.audio('okSound', ['audio/SoundEffects/p-ping.mp3']);
-            game.load.audio('failSound', ['audio/SoundEffects/battery.wav']);
+            game.load.audio('audio', ['assets/audio/background_music.wav']);
+            game.load.audio('okSound', ['assets/audio/hit.mp3']);
+            game.load.audio('failSound', ['assets/audio/fail.wav']);
+            game.load.audio('winSound', ['assets/audio/winning.wav']);
+            game.load.audio('looseSound', ['assets/audio/loosing.wav']);
+
 
             // imagenes
-            game.load.image('player', 'sprites/phaser-dude.png');
-            game.load.image('aqua_ball', 'sprites/aqua_ball.png');
-            game.load.image('purple_ball', 'sprites/purple_ball.png');
-            game.load.image('green_ball', 'sprites/green_ball.png');
+            game.load.image('player', 'assets/sprites/player.png');
+            game.load.image('aqua_ball', 'assets/sprites/aqua_ball.png');
+            game.load.image('purple_ball', 'assets/sprites/purple_ball.png');
+            game.load.image('green_ball', 'assets/sprites/green_ball.png');
 
             // fuente para la puntuacion
-            game.load.bitmapFont('desyrel-pink', 'fonts/bitmapFonts/desyrel-pink.png', '/fonts/bitmapFonts/desyrel-pink.xml');
+            game.load.bitmapFont('desyrel-pink', 'assets/fonts/desyrel-pink.png', 'assets/fonts/desyrel-pink.xml');
             
             // posiciones del dibujo
             puntosCometa = [
-                {'x':240, 'y':380, 'sprite':'purple_ball'},     
-                {'x':235, 'y':320, 'sprite':'purple_ball'},  
-                {'x':230, 'y':240, 'sprite':'purple_ball'},  
-                {'x':225, 'y':180, 'sprite':'purple_ball'},  
-                {'x':220, 'y':88, 'sprite':'purple_ball'}, 
+                {'x':240, 'y':380, 'sprite':'purple_ball', 'enable':true, 'toEnable':15},     
+                {'x':235, 'y':320, 'sprite':'purple_ball', 'enable':true},  
+                {'x':230, 'y':240, 'sprite':'purple_ball', 'enable':true},  
+                {'x':225, 'y':180, 'sprite':'purple_ball', 'enable':true},  
+                {'x':220, 'y':88, 'sprite':'purple_ball', 'enable':true}, 
 
-                {'x':270, 'y':65, 'sprite':'aqua_ball'},  
-                {'x':310, 'y':50, 'sprite':'aqua_ball'},  
-                {'x':355, 'y':30, 'sprite':'aqua_ball'}, 
+                {'x':270, 'y':65, 'sprite':'aqua_ball', 'enable':true},  
+                {'x':310, 'y':50, 'sprite':'aqua_ball', 'enable':true},  
+                {'x':355, 'y':30, 'sprite':'aqua_ball', 'enable':true}, 
                  
-                {'x':425, 'y':0, 'sprite':'aqua_ball'}, 
-                {'x':440, 'y':45, 'sprite':'aqua_ball'},  
-                {'x':460, 'y':105, 'sprite':'aqua_ball'},  
-                {'x':485, 'y':180, 'sprite':'aqua_ball'}, 
+                {'x':425, 'y':0, 'sprite':'aqua_ball', 'enable':true}, 
+                {'x':440, 'y':45, 'sprite':'aqua_ball', 'enable':true},  
+                {'x':460, 'y':105, 'sprite':'aqua_ball', 'enable':true},  
+                {'x':485, 'y':180, 'sprite':'aqua_ball', 'enable':true}, 
 
-                {'x':430, 'y':225, 'sprite':'purple_ball'},  
-                {'x':380, 'y':265, 'sprite':'purple_ball'},  
-                {'x':325, 'y':310, 'sprite':'purple_ball'},  
+                {'x':430, 'y':225, 'sprite':'purple_ball', 'enable':true},  
+                {'x':380, 'y':265, 'sprite':'purple_ball', 'enable':true},  
+                {'x':325, 'y':310, 'sprite':'purple_ball', 'enable':true},  
+                {'x':240, 'y':380, 'sprite':'purple_ball', 'enable':false},
                  
-                {'x':224, 'y':415, 'sprite':'green_ball'},  
-                {'x':220, 'y':455, 'sprite':'green_ball'},  
-                {'x':225, 'y':500, 'sprite':'green_ball'},  
-                {'x':255, 'y':530, 'sprite':'green_ball'},  
-                {'x':290, 'y':515, 'sprite':'green_ball'},  
-                {'x':315, 'y':490, 'sprite':'green_ball'},  
-                {'x':350, 'y':455, 'sprite':'green_ball'},  
-                {'x':365, 'y':485, 'sprite':'green_ball'},  
-                {'x':365, 'y':510, 'sprite':'green_ball'},  
-                {'x':365, 'y':550, 'sprite':'green_ball'},  
-                {'x':380, 'y':575, 'sprite':'green_ball'},  
-                {'x':425, 'y':565, 'sprite':'green_ball'},  
-                {'x':450, 'y':565, 'sprite':'green_ball'},
-                {'x':475, 'y':565, 'sprite':'green_ball'}
+                {'x':224, 'y':415, 'sprite':'green_ball', 'enable':true},  
+                {'x':220, 'y':455, 'sprite':'green_ball', 'enable':true},  
+                {'x':225, 'y':500, 'sprite':'green_ball', 'enable':true},  
+                {'x':255, 'y':530, 'sprite':'green_ball', 'enable':true},  
+                {'x':290, 'y':515, 'sprite':'green_ball', 'enable':true},  
+                {'x':315, 'y':490, 'sprite':'green_ball', 'enable':true},  
+                {'x':350, 'y':455, 'sprite':'green_ball', 'enable':true},  
+                {'x':365, 'y':485, 'sprite':'green_ball', 'enable':true},  
+                {'x':365, 'y':510, 'sprite':'green_ball', 'enable':true},  
+                {'x':365, 'y':550, 'sprite':'green_ball', 'enable':true},  
+                {'x':380, 'y':575, 'sprite':'green_ball', 'enable':true},  
+                {'x':425, 'y':565, 'sprite':'green_ball', 'enable':true},  
+                {'x':450, 'y':565, 'sprite':'green_ball', 'enable':true},
+                {'x':475, 'y':565, 'sprite':'green_ball', 'enable':true}
             ];
 
             // sprites del dibujo
@@ -143,6 +149,7 @@ var app = {
             for(point in puntosCometa){
                 var sprite = dibujo.create(puntosCometa[point]['x'], puntosCometa[point]['y'], puntosCometa[point]['sprite']);
                 game.physics.arcade.enable(sprite);
+                sprite.body.enable = puntosCometa[point]['enable'];
                 sprite.body.collideWorldBounds = true;
                 spritesDibujo[point] = sprite;
             }
@@ -152,6 +159,8 @@ var app = {
             music.play();
             okSound = game.add.audio('okSound');
             failSound = game.add.audio('failSound');
+            winSound = game.add.audio('winSound');
+            looseSound = game.add.audio('looseSound');
 
             // on collide action
             player.body.onCollide = new Phaser.Signal();
@@ -189,6 +198,10 @@ var app = {
         // pintar la linea entre dos puntos, cuando haya colisionado con dos puntos
         if(undefined === firstPoint && puntosCometa[currentPoint]['x'] === point.position.x && puntosCometa[currentPoint]['y'] === point.position.y){
             firstPoint = point.position;
+
+            //activar punto desactivado inicialmente
+            spritesDibujo[puntosCometa[currentPoint]['toEnable']].body.enable = true;
+
             correctPoint = true;
         }else if(undefined != firstPoint){
             var secondPoint = point.position;
@@ -198,17 +211,22 @@ var app = {
                 && puntosCometa[currentPoint+1]['x'] === secondPoint.x && puntosCometa[currentPoint+1]['y'] === secondPoint.y){
                 graphics.moveTo(firstPoint.x, firstPoint.y);
                 graphics.lineTo(secondPoint.x, secondPoint.y);
-                console.log("Pintando linea entre (" + firstPoint.x + "," + firstPoint.y + ") y (" + secondPoint.x + "," + secondPoint.y+"). CurrentPoint " + currentPoint + " " + puntosCometa.length);
+                console.log("Pintando linea entre (" + firstPoint.x + "," + firstPoint.y + ") y (" + secondPoint.x + "," + secondPoint.y+")");
 
                 firstPoint = secondPoint;
-
                 currentPoint++;
-
                 correctPoint = true;
             }
         }
 
         // deshabilitar el punto y sumar puntuacion al usuario
+        app.manageScore(point, correctPoint);
+
+        // pintar puntuacion
+        app.drawScore();
+    },
+
+    manageScore: function(point, correctPoint){
         if(correctPoint){
             point.body.enable = false;  
             score += SCORE_TO_ADD;  
@@ -219,16 +237,21 @@ var app = {
             // sonar fallo
             failSound.play();
         }
+    },
 
+    drawScore: function(){
         // Pintar puntuacion
         if(score < MIN_SCORE){// si perdio, se notifica y se deshabilitan todos los puntos restantes
             textScore.setText(LOOSE_MESSAGE);
+            music.stop();
+            looseSound.play();
             for(var i in spritesDibujo){
                 spritesDibujo[i].body.enable = false;
             }
         }else if(currentPoint === (puntosCometa.length-1)){//termino el juego
             textScore.setText(WIN_MESSAGE + "\n" + SCORE_LABEL + " " + score);
             music.stop();
+            winSound.play();
         }else{
             textScore.setText(SCORE_LABEL + " " + score);
         }
