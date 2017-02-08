@@ -1,6 +1,10 @@
 // array con las posiciones de los puntos del dibujo
 var puntosCometa;
 
+// Altura y anchura originales de donde se sacaron los puntos
+var ORIGINAL_WIDTH = 500;
+var ORIGINAL_HEIGTH = 600;
+
 // array con los sprites del dibujo
 var spritesDibujo;
 
@@ -129,47 +133,56 @@ var app = {
 
     loadSprites: function(game){
         game.load.image('player', 'assets/sprites/player.png');
+        game.load.image('star', 'assets/sprites/star.png');
         game.load.image('aqua_ball', 'assets/sprites/aqua_ball.png');
         game.load.image('purple_ball', 'assets/sprites/purple_ball.png');
         game.load.image('green_ball', 'assets/sprites/green_ball.png');
     },
 
+    convertPointX: function(originalX){
+        return (originalX*width/ORIGINAL_WIDTH) - 80;
+    },
+
+    convertPointY: function(originalY){
+        return originalY*height/ORIGINAL_HEIGTH;
+    },
+
     loadPuntosCometa: function(){
         puntosCometa = [
-            {'x':240, 'y':380, 'sprite':'purple_ball', 'enable':true, 'toEnable':15},     
-            {'x':235, 'y':320, 'sprite':'purple_ball', 'enable':true},  
-            {'x':230, 'y':240, 'sprite':'purple_ball', 'enable':true},  
-            {'x':225, 'y':180, 'sprite':'purple_ball', 'enable':true},  
-            {'x':220, 'y':88, 'sprite':'purple_ball', 'enable':true}, 
+            {'x':app.convertPointX(240), 'y':app.convertPointY(380), 'sprite':'star', 'enable':true, 'toEnable':15},     
+            {'x':app.convertPointX(235), 'y':app.convertPointY(320), 'sprite':'purple_ball', 'enable':true},  
+            {'x':app.convertPointX(230), 'y':app.convertPointY(240), 'sprite':'purple_ball', 'enable':true},  
+            {'x':app.convertPointX(225), 'y':app.convertPointY(180), 'sprite':'purple_ball', 'enable':true},  
+            {'x':app.convertPointX(220), 'y':app.convertPointY(88), 'sprite':'purple_ball', 'enable':true}, 
 
-            {'x':270, 'y':65, 'sprite':'aqua_ball', 'enable':true},  
-            {'x':310, 'y':50, 'sprite':'aqua_ball', 'enable':true},  
-            {'x':355, 'y':30, 'sprite':'aqua_ball', 'enable':true}, 
+            {'x':app.convertPointX(270), 'y':app.convertPointY(65), 'sprite':'aqua_ball', 'enable':true},  
+            {'x':app.convertPointX(310), 'y':app.convertPointY(50), 'sprite':'aqua_ball', 'enable':true},  
+            {'x':app.convertPointX(355), 'y':app.convertPointY(30), 'sprite':'aqua_ball', 'enable':true}, 
              
-            {'x':425, 'y':0, 'sprite':'aqua_ball', 'enable':true}, 
-            {'x':440, 'y':45, 'sprite':'aqua_ball', 'enable':true},  
-            {'x':460, 'y':105, 'sprite':'aqua_ball', 'enable':true},  
-            {'x':485, 'y':180, 'sprite':'aqua_ball', 'enable':true}, 
+            {'x':app.convertPointX(425), 'y':app.convertPointY(0), 'sprite':'aqua_ball', 'enable':true}, 
+            {'x':app.convertPointX(440), 'y':app.convertPointY(45), 'sprite':'aqua_ball', 'enable':true},  
+            {'x':app.convertPointX(460), 'y':app.convertPointY(105), 'sprite':'aqua_ball', 'enable':true},  
+            {'x':app.convertPointX(485), 'y':app.convertPointY(180), 'sprite':'aqua_ball', 'enable':true}, 
 
-            {'x':430, 'y':225, 'sprite':'purple_ball', 'enable':true},  
-            {'x':380, 'y':265, 'sprite':'purple_ball', 'enable':true},  
-            {'x':325, 'y':310, 'sprite':'purple_ball', 'enable':true},  
-            {'x':240, 'y':380, 'sprite':'purple_ball', 'enable':false},
+            {'x':app.convertPointX(430), 'y':app.convertPointY(225), 'sprite':'purple_ball', 'enable':true},  
+            {'x':app.convertPointX(380), 'y':app.convertPointY(265), 'sprite':'purple_ball', 'enable':true},  
+            {'x':app.convertPointX(325), 'y':app.convertPointY(310), 'sprite':'purple_ball', 'enable':true},  
+            {'x':app.convertPointX(240), 'y':app.convertPointY(380), 'sprite':'star', 'enable':false},
              
-            {'x':224, 'y':415, 'sprite':'green_ball', 'enable':true},  
-            {'x':220, 'y':455, 'sprite':'green_ball', 'enable':true},  
-            {'x':225, 'y':500, 'sprite':'green_ball', 'enable':true},  
-            {'x':255, 'y':530, 'sprite':'green_ball', 'enable':true},  
-            {'x':290, 'y':515, 'sprite':'green_ball', 'enable':true},  
-            {'x':315, 'y':490, 'sprite':'green_ball', 'enable':true},  
-            {'x':350, 'y':455, 'sprite':'green_ball', 'enable':true},  
-            {'x':365, 'y':485, 'sprite':'green_ball', 'enable':true},  
-            {'x':365, 'y':510, 'sprite':'green_ball', 'enable':true},  
-            {'x':365, 'y':550, 'sprite':'green_ball', 'enable':true},  
-            {'x':380, 'y':575, 'sprite':'green_ball', 'enable':true},  
-            {'x':425, 'y':565, 'sprite':'green_ball', 'enable':true},  
-            {'x':450, 'y':565, 'sprite':'green_ball', 'enable':true},
-            {'x':475, 'y':565, 'sprite':'green_ball', 'enable':true}
+            {'x':app.convertPointX(224), 'y':app.convertPointY(415), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(220), 'y':app.convertPointY(455), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(225), 'y':app.convertPointY(500), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(255), 'y':app.convertPointY(530), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(290), 'y':app.convertPointY(515), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(315), 'y':app.convertPointY(490), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(350), 'y':app.convertPointY(455), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(365), 'y':app.convertPointY(485), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(365), 'y':app.convertPointY(510), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(365), 'y':app.convertPointY(550), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(380), 'y':app.convertPointY(575), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(425), 'y':app.convertPointY(565), 'sprite':'green_ball', 'enable':true},  
+            {'x':app.convertPointX(450), 'y':app.convertPointY(565), 'sprite':'green_ball', 'enable':true},
+            {'x':app.convertPointX(475), 'y':app.convertPointY(565), 'sprite':'green_ball', 'enable':true}
         ];
     },
 
@@ -186,7 +199,7 @@ var app = {
     },
 
     createPlayerSprite: function(game){
-        player = game.add.sprite(100, 200, 'player');
+        player = game.add.sprite(0, height/2, 'player');
         game.physics.arcade.enable(player);
         player.body.collideWorldBounds = true;
         game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -197,6 +210,10 @@ var app = {
         var point
         for(point in puntosCometa){
             var sprite = dibujo.create(puntosCometa[point]['x'], puntosCometa[point]['y'], puntosCometa[point]['sprite']);
+            if('star' == puntosCometa[point]['sprite']){
+                sprite.scale.setTo(0.05, 0.05);
+                sprite.anchor.setTo(0.5, 0.5);
+            }
             game.physics.arcade.enable(sprite);
             sprite.body.enable = puntosCometa[point]['enable'];
             sprite.body.collideWorldBounds = true;
@@ -221,11 +238,13 @@ var app = {
         if(undefined === firstPoint && puntosCometa[currentPoint]['x'] === point.position.x && puntosCometa[currentPoint]['y'] === point.position.y){
             firstPoint = point.position;
 
-            //activar punto desactivado inicialmente
-            spritesDibujo[puntosCometa[currentPoint]['toEnable']].body.enable = true;
-
             correctPoint = true;
         }else if(undefined != firstPoint){
+
+            if(undefined != puntosCometa[currentPoint]['toEnable']){
+                //activar punto desactivado inicialmente
+                spritesDibujo[puntosCometa[currentPoint]['toEnable']].body.enable = true;
+            }
             correctPoint = app.doDrawLine(point);
         }
 
