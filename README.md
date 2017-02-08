@@ -1,0 +1,3 @@
+# exercises
+
+Project that contains several exercises: phone gap, ...
