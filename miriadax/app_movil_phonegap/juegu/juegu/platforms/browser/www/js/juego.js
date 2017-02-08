@@ -32,6 +32,9 @@ var SCORE_LABEL = "Puntos: ";
 var LOOSE_MESSAGE = "¡¡¡Oh!!! Perdiste :(";
 var WIN_MESSAGE = "¡¡Ganaste!! :)";
 
+// Multiplicador velocidad
+var VELOCITY_MULTIPLIER = 100;
+
 // sonidos
 var music;
 var okSound;
@@ -45,6 +48,7 @@ var app = {
         height  = document.documentElement.clientHeight;
         width = document.documentElement.clientWidth;
 
+        app.vigilaSensores();
         app.startGame();
     },
 
@@ -110,11 +114,8 @@ var app = {
            game.physics.arcade.collide(player, dibujo);
 
             //  mover el jugador con el raton
-            game.physics.arcade.moveToPointer(player, 400);
-            if (Phaser.Rectangle.contains(player.body, game.input.x, game.input.y))
-            {
-                player.body.velocity.setTo(0, 0);
-            }
+            player.body.velocity.y = (velocidadY * VELOCITY_MULTIPLIER);
+            player.body.velocity.x = (velocidadX * (-1 * VELOCITY_MULTIPLIER));
         }
     },    
 
@@ -280,6 +281,37 @@ var app = {
         }else{
             textScore.setText(SCORE_LABEL + " " + score);
         }
+    },
+
+    vigilaSensores: function(){    
+        function onError() {
+            console.log('onError!');
+        }
+
+        function onSuccess(datosAceleracion){
+          app.detectaAgitacion(datosAceleracion);
+          app.registraDireccion(datosAceleracion);
+        }
+
+        navigator.accelerometer.watchAcceleration(onSuccess, onError,{ frequency: 10 });
+    },
+
+    detectaAgitacion: function(datosAceleracion){
+        var agitacionX = datosAceleracion.x > 10;
+        var agitacionY = datosAceleracion.y > 10;
+
+        if (agitacionX || agitacionY){
+          setTimeout(app.recomienza, 1000);
+        }
+    },
+
+    recomienza: function(){
+        document.location.reload(true);
+    },
+
+    registraDireccion: function(datosAceleracion){
+        velocidadX = datosAceleracion.x;
+        velocidadY = datosAceleracion.y ;
     }
 
 };
