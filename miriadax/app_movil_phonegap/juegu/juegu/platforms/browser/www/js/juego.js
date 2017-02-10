@@ -11,6 +11,7 @@ var spritesDibujo;
 // sprite jugador y sprites del dibujo
 var player;
 var dibujo;
+var star;
 
 // primer punto para dibujar las lineas entre puntos
 var firstPoint; 
@@ -20,6 +21,9 @@ var graphics;
 
 // variable que indica cual sera, dentro del array de puntos, el siguiente punto valido con el que colisionar
 var currentPoint;
+
+// posicion de la estrella
+var starPosition;
 
 // puntuacion
 var score;
@@ -80,6 +84,9 @@ var app = {
 
             // inicializar el puntero que indicara el siguiente punto a colisionar
             currentPoint = 0;
+
+            // inicializar posicion estrella
+            starPosition = 1;
 
             // score inicial
             score = INITIAL_SCORE;
@@ -149,7 +156,7 @@ var app = {
 
     loadPuntosCometa: function(){
         puntosCometa = [
-            {'x':app.convertPointX(240), 'y':app.convertPointY(380), 'sprite':'star', 'enable':true, 'toEnable':15},     
+            {'x':app.convertPointX(240), 'y':app.convertPointY(380), 'sprite':'purple_ball', 'enable':true, 'toEnable':15},     
             {'x':app.convertPointX(235), 'y':app.convertPointY(320), 'sprite':'purple_ball', 'enable':true},  
             {'x':app.convertPointX(230), 'y':app.convertPointY(240), 'sprite':'purple_ball', 'enable':true},  
             {'x':app.convertPointX(225), 'y':app.convertPointY(180), 'sprite':'purple_ball', 'enable':true},  
@@ -167,7 +174,7 @@ var app = {
             {'x':app.convertPointX(430), 'y':app.convertPointY(225), 'sprite':'purple_ball', 'enable':true},  
             {'x':app.convertPointX(380), 'y':app.convertPointY(265), 'sprite':'purple_ball', 'enable':true},  
             {'x':app.convertPointX(325), 'y':app.convertPointY(310), 'sprite':'purple_ball', 'enable':true},  
-            {'x':app.convertPointX(240), 'y':app.convertPointY(380), 'sprite':'star', 'enable':false},
+            {'x':app.convertPointX(240), 'y':app.convertPointY(380), 'sprite':'purple_ball', 'enable':false},
              
             {'x':app.convertPointX(224), 'y':app.convertPointY(415), 'sprite':'green_ball', 'enable':true},  
             {'x':app.convertPointX(220), 'y':app.convertPointY(455), 'sprite':'green_ball', 'enable':true},  
@@ -210,15 +217,15 @@ var app = {
         var point
         for(point in puntosCometa){
             var sprite = dibujo.create(puntosCometa[point]['x'], puntosCometa[point]['y'], puntosCometa[point]['sprite']);
-            if('star' == puntosCometa[point]['sprite']){
-                sprite.scale.setTo(0.05, 0.05);
-                sprite.anchor.setTo(0.5, 0.5);
-            }
             game.physics.arcade.enable(sprite);
             sprite.body.enable = puntosCometa[point]['enable'];
             sprite.body.collideWorldBounds = true;
             spritesDibujo[point] = sprite;
         }
+
+        star = game.add.sprite(puntosCometa[0]['x'], puntosCometa[0]['y'], 'star');
+        star.scale.setTo(0.05, 0.05);
+        star.anchor.setTo(0.5, 0.5);
     },
 
     createAudios: function(game){
@@ -237,6 +244,8 @@ var app = {
         // pintar la linea entre dos puntos, cuando haya colisionado con dos puntos
         if(undefined === firstPoint && puntosCometa[currentPoint]['x'] === point.position.x && puntosCometa[currentPoint]['y'] === point.position.y){
             firstPoint = point.position;
+
+            app.moveStar();
 
             correctPoint = true;
         }else if(undefined != firstPoint){
@@ -262,9 +271,10 @@ var app = {
             && spritesDibujo[currentPoint+1].x === secondPoint.x && spritesDibujo[currentPoint+1].y === secondPoint.y){
             graphics.moveTo(firstPoint.x, firstPoint.y);
             graphics.lineTo(secondPoint.x, secondPoint.y);
-            console.log("Pintando linea entre (" + firstPoint.x + "," + firstPoint.y + ") y (" + secondPoint.x + "," + secondPoint.y+")");
             firstPoint = secondPoint;
             currentPoint++;
+
+            app.moveStar();
             return true;
         }else{
             return false;
@@ -278,6 +288,7 @@ var app = {
             // sonar acierto
             okSound.play();  
         }else{
+            console.log("Quitando puntos " + point + " " + correctPoint);
             score -= SCORE_TO_DECREMENT;
             // sonar fallo
             failSound.play();
@@ -299,6 +310,14 @@ var app = {
             winSound.play();
         }else{
             textScore.setText(SCORE_LABEL + " " + score);
+        }
+    },
+
+    moveStar: function(){
+        if(starPosition < (spritesDibujo.length)){
+            star.x = puntosCometa[starPosition]['x'];
+            star.y = puntosCometa[starPosition]['y'];
+            starPosition++;
         }
     },
 
