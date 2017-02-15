@@ -10,4 +10,5 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="android-minSdkVersion" value="14" />
+    <preference name="orientation" value="portrait" />
 </widget>

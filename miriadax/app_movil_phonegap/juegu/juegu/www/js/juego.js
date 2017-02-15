@@ -28,11 +28,12 @@ var starPosition;
 // puntuacion
 var score;
 var textScore;
+var firstPointHit;
 
 // puntuacion minima y puntuaciones a sumar o restar en funcion de si el jugador pinta bien o no cada linea
 var MIN_SCORE = 0;
-var INITIAL_SCORE = 100;
-var SCORE_TO_ADD = 100;
+var INITIAL_SCORE = 10;
+var SCORE_TO_ADD = 10;
 var SCORE_TO_DECREMENT = 1;
 
 // texto puntuacion
@@ -90,6 +91,7 @@ var app = {
 
             // score inicial
             score = INITIAL_SCORE;
+            firstPointHit = false;
         }
 
         function create() {
@@ -127,6 +129,15 @@ var app = {
             //  mover el jugador con el raton
             player.body.velocity.y = (velocidadY * VELOCITY_MULTIPLIER);
             player.body.velocity.x = (velocidadX * (-1 * VELOCITY_MULTIPLIER));
+
+             //  400 is the speed it will move towards the mouse
+           /* game.physics.arcade.moveToPointer(player, 400);
+
+            //  if it's overlapping the mouse, don't move any more
+            if (Phaser.Rectangle.contains(player.body, game.input.x, game.input.y))
+            {
+                player.body.velocity.setTo(0, 0);
+            }*/
         }
     },    
 
@@ -140,7 +151,7 @@ var app = {
 
     loadSprites: function(game){
         game.load.image('player', 'assets/sprites/player.png');
-        game.load.image('star', 'assets/sprites/star.png');
+        game.load.atlas('star', 'assets/sprites/star.png', 'assets/sprites/star.json');
         game.load.image('aqua_ball', 'assets/sprites/aqua_ball.png');
         game.load.image('purple_ball', 'assets/sprites/purple_ball.png');
         game.load.image('green_ball', 'assets/sprites/green_ball.png');
@@ -217,6 +228,7 @@ var app = {
         var point
         for(point in puntosCometa){
             var sprite = dibujo.create(puntosCometa[point]['x'], puntosCometa[point]['y'], puntosCometa[point]['sprite']);
+            sprite.anchor.setTo(0.5, 0.5);
             game.physics.arcade.enable(sprite);
             sprite.body.enable = puntosCometa[point]['enable'];
             sprite.body.collideWorldBounds = true;
@@ -224,8 +236,10 @@ var app = {
         }
 
         star = game.add.sprite(puntosCometa[0]['x'], puntosCometa[0]['y'], 'star');
-        star.scale.setTo(0.05, 0.05);
-        star.anchor.setTo(0.5, 0.5);
+        star.animations.add('walk');
+        star.animations.play('walk', 10, true);
+        star.scale.setTo(0.25, 0.25);
+        star.anchor.setTo(0.5, 0.55);
     },
 
     createAudios: function(game){
@@ -248,6 +262,7 @@ var app = {
             app.moveStar();
 
             correctPoint = true;
+            firstPointHit = true;
         }else if(undefined != firstPoint){
 
             if(undefined != puntosCometa[currentPoint]['toEnable']){
@@ -287,7 +302,7 @@ var app = {
             score += SCORE_TO_ADD;  
             // sonar acierto
             okSound.play();  
-        }else{
+        }else if(firstPointHit){
             console.log("Quitando puntos " + point + " " + correctPoint);
             score -= SCORE_TO_DECREMENT;
             // sonar fallo
