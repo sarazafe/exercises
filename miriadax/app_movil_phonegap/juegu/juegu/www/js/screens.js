@@ -1,6 +1,6 @@
 {
 	'screens': [
-		'screen': [// cometa
+		'screen': [// comet
 			{'x':240, 'y':380, 'sprite':'purple_ball', 'enable':true, 'toEnable':15},     
             {'x':235, 'y':320, 'sprite':'purple_ball', 'enable':true},  
             {'x':230, 'y':240, 'sprite':'purple_ball', 'enable':true},  
@@ -37,7 +37,7 @@
             {'x':475, 'y':565, 'sprite':'green_ball', 'enable':true}
 		],
 		
-		'screen': [ // cisne
+		'screen': [ // swan
 			{'x':25, 'y':170, 'sprite':'purple_ball', 'enable':true, 'toEnable':5},  
             {'x':140, 'y':64, 'sprite':'purple_ball', 'enable':true},  
             {'x':224, 'y':152, 'sprite':'purple_ball', 'enable':true},  
@@ -58,3 +58,5 @@
 		]
 	]
 }
+
+             
