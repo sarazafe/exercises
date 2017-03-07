@@ -54,7 +54,32 @@
 
             {'x':135, 'y':228, 'sprite':'purple_ball', 'enable':true},  
             {'x':135, 'y':174, 'sprite':'purple_ball', 'enable':true},  
-            {'x':25, 'y':170, 'sprite':'purple_ball', 'enable':true}
+            {'x':25, 'y':170, 'sprite':'purple_ball', 'enable':false}
+		],
+		
+		'screen': [ // rabbit
+			{'x':52, 'y':204, 'sprite':'purple_ball', 'enable':true, 'toEnable':5},  
+            {'x':60, 'y':100, 'sprite':'purple_ball', 'enable':true},  
+            {'x':85, 'y':98, 'sprite':'purple_ball', 'enable':true},  
+            {'x':200, 'y':4, 'sprite':'purple_ball', 'enable':true}, 
+ 
+            {'x':324, 'y':10, 'sprite':'aqua_ball', 'enable':true},   
+            {'x':206, 'y':104, 'sprite':'aqua_ball', 'enable':true}, 
+             
+            {'x':178, 'y':104, 'sprite':'aqua_ball', 'enable':true}, 
+            {'x':175, 'y':156, 'sprite':'aqua_ball', 'enable':true},  
+            {'x':340, 'y':305, 'sprite':'aqua_ball', 'enable':true},  
+            {'x':334, 'y':585, 'sprite':'aqua_ball', 'enable':true}, 
+
+            {'x':210, 'y':584, 'sprite':'purple_ball', 'enable':true},  
+            {'x':212, 'y':484, 'sprite':'purple_ball', 'enable':true}, 
+            {'x':164, 'y':440, 'sprite':'purple_ball', 'enable':true}, 
+            {'x':158, 'y':516, 'sprite':'purple_ball', 'enable':true}, 
+            {'x':78, 'y':446, 'sprite':'purple_ball', 'enable':true}, 
+            {'x':166, 'y':375, 'sprite':'purple_ball', 'enable':true}, 
+            {'x':170, 'y':210, 'sprite':'purple_ball', 'enable':true},  
+			
+            {'x':52, 'y':204, 'sprite':'purple_ball', 'enable':false}
 		]
 	]
 }
